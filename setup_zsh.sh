@@ -2,7 +2,7 @@
 
 # Verifica si el script se está ejecutando como root
 if [ "$EUID" -ne 0 ]; then
-  echo "Por favor, ejecuta este script como root."
+  echo "No tienes privilegios de superusuario."
   exit 1
 fi
 
@@ -10,7 +10,7 @@ fi
 apt update
 apt install -y zsh git
 
-# Cambia la shell predeterminada a zsh para el usuario actual
+# Cambia la shell predeterminada a zsh
 chsh -s $(which zsh) $USER
 
 # Instala oh-my-zsh
@@ -19,16 +19,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # Clona powerlevel10k
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.config/powerlevel10k
 
-# Pide la ruta de p10k.zsh
-read -p "Introduce la ruta completa de p10k.zsh (ejemplo: $HOME/.config/powerlevel10k/p10k.zsh): " p10k_path
-
-# Copia el archivo p10k.zsh al directorio del usuario
-if [ -f "$p10k_path" ]; then
-  cp "$p10k_path" $HOME/.p10k.zsh
-else
-  echo "El archivo p10k.zsh no se encontró en la ruta proporcionada."
-  exit 1
-fi
 
 # Configura .zshrc
 cat <<EOF > $HOME/.zshrc
